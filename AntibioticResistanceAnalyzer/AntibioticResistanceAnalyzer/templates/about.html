@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">About AMR Mutation Analyzer</h1>
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Overview</h2>
+                    <p class="card-text">
+                        The AMR Mutation Analyzer is a comprehensive bioinformatics tool designed to identify genetic mutations associated with antibiotic resistance in bacterial genomes. By comparing resistant and non-resistant strains, the tool identifies mutations that are statistically associated with resistance phenotypes.
+                    </p>
+                    <p class="card-text">
+                        Our application combines statistical analysis with machine learning approaches to provide a robust identification of resistance-linked mutations. The results are presented through intuitive visualizations and detailed reports that can be exported for further analysis.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 bg-dark shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Methodology</h2>
+                    <h5 class="card-subtitle mb-3 text-muted">Our analysis pipeline includes:</h5>
+                    <ol class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">
+                            <strong>Data Preprocessing</strong>: Loading and processing genomic data from various formats (FASTA, CSV, TSV, JSON)
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Mutation Identification</strong>: Identifying genetic variations between resistant and non-resistant strains
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Statistical Analysis</strong>: Group Association Model (GAM) for comparing mutation frequencies with p-value calculations
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Feature Selection</strong>: Using XGBoost to identify the most informative mutations
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Classification</strong>: Training SVM models to predict resistance status based on genetic features
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Model Validation</strong>: 10-fold cross-validation to ensure reliability
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>Structural Mapping</strong>: Mapping significant mutations to 3D protein structures
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 bg-dark shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Technical Stack</h2>
+                    <div class="mb-4">
+                        <h5 class="card-subtitle mb-3 text-muted">Core Technologies:</h5>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            <li class="list-group-item bg-transparent"><strong>Python 3.8+</strong>: Core programming language</li>
+                            <li class="list-group-item bg-transparent"><strong>Flask</strong>: Web application framework</li>
+                            <li class="list-group-item bg-transparent"><strong>SQLAlchemy</strong>: Database ORM</li>
+                            <li class="list-group-item bg-transparent"><strong>Bootstrap</strong>: Frontend framework</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="card-subtitle mb-3 text-muted">Scientific Libraries:</h5>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            <li class="list-group-item bg-transparent"><strong>Biopython</strong>: Biological data processing and PDB file handling</li>
+                            <li class="list-group-item bg-transparent"><strong>Pandas/NumPy</strong>: Data manipulation and analysis</li>
+                            <li class="list-group-item bg-transparent"><strong>Scikit-learn</strong>: Machine learning (SVM, cross-validation)</li>
+                            <li class="list-group-item bg-transparent"><strong>XGBoost</strong>: Gradient boosting for feature selection</li>
+                            <li class="list-group-item bg-transparent"><strong>SciPy</strong>: Statistical analysis</li>
+                            <li class="list-group-item bg-transparent"><strong>Chart.js</strong>: Interactive data visualization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Using the Application</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3 text-muted">Getting Started:</h5>
+                            <ol class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Create an account</strong> to manage your projects
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Create a new project</strong> for your analysis
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Upload genome data</strong> for resistant and non-resistant strains
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Run analysis</strong> with desired parameters
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Explore results</strong> through interactive visualizations
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>Export findings</strong> for publication or further analysis
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3 text-muted">Supported Data Formats:</h5>
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item bg-transparent">
+                                    <strong>FASTA (.fa, .fasta, .fna)</strong>: Genomic sequence data
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>CSV (.csv)</strong>: Tabular data with sequences or features
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>TSV (.tsv)</strong>: Tab-separated values with genomic data
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <strong>JSON (.json)</strong>: Structured genomic data from databases
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h2 class="card-title">References and Resources</h2>
+                    <div class="mb-3">
+                        <h5 class="card-subtitle mb-3 text-muted">External Databases:</h5>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            <li class="list-group-item bg-transparent">
+                                <strong>CARD (Comprehensive Antibiotic Resistance Database)</strong>
+                                <p class="small mb-0">A curated resource containing high quality reference data on antimicrobial resistance genes.</p>
+                                <a href="https://card.mcmaster.ca/" target="_blank" class="small">https://card.mcmaster.ca/</a>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>NCBI ReSeqTB</strong>
+                                <p class="small mb-0">A platform for M. tuberculosis genomic data with associated drug resistance information.</p>
+                                <a href="https://www.ncbi.nlm.nih.gov/bioproject/PRJNA218683" target="_blank" class="small">NCBI ReSeqTB Project</a>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Protein Data Bank (PDB)</strong>
+                                <p class="small mb-0">3D structural data for proteins, used for mapping mutations to structures.</p>
+                                <a href="https://www.rcsb.org/" target="_blank" class="small">https://www.rcsb.org/</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="card-subtitle mb-3 text-muted">Further Reading:</h5>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            <li class="list-group-item bg-transparent">
+                                Nguyen M, et al. (2019). Using machine learning to predict antimicrobial resistance in M. tuberculosis. 
+                                <span class="text-muted fst-italic">Nature Communications, 10(1), 1-10.</span>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                Chen L, et al. (2020). CARD 2020: antibiotic resistome surveillance with the comprehensive antibiotic resistance database. 
+                                <span class="text-muted fst-italic">Nucleic Acids Research, 48(D1), D517-D525.</span>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                Gröschel MI, et al. (2021). Identification of antimicrobial resistance determinants and their interactions using machine learning. 
+                                <span class="text-muted fst-italic">Science Translational Medicine, 13(593).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

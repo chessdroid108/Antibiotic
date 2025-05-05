@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('project_detail', project_id=project.id) }}">{{ project.name }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Upload Genome Data</li>
+                </ol>
+            </nav>
+            <h1 class="mb-4">Upload Genome Data</h1>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Upload genome data for your project. Make sure to specify whether each sample is resistant or non-resistant.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">Upload File</h2>
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Select Genome File</label>
+                            <input class="form-control" type="file" id="file" name="file" required>
+                            <div class="form-text">
+                                Supported formats: FASTA (.fa, .fasta, .fna), CSV (.csv), TSV (.tsv), JSON (.json)
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Resistance Status</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_resistant" id="resistant_yes" value="yes" required>
+                                <label class="form-check-label" for="resistant_yes">
+                                    Resistant
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_resistant" id="resistant_no" value="no">
+                                <label class="form-check-label" for="resistant_no">
+                                    Non-Resistant
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="is_resistant" id="resistant_unknown" value="unknown">
+                                <label class="form-check-label" for="resistant_unknown">
+                                    Unknown
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="organism" class="form-label">Organism (optional)</label>
+                            <input type="text" class="form-control" id="organism" name="organism" placeholder="e.g., Escherichia coli">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="antibiotic" class="form-label">Antibiotic (optional)</label>
+                            <input type="text" class="form-control" id="antibiotic" name="antibiotic" placeholder="e.g., Ciprofloxacin">
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload me-2"></i>Upload
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">File Format Guidelines</h3>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">
+                            <strong>FASTA Files</strong>
+                            <p class="small mb-0">Standard FASTA format with sequence headers and nucleotide sequences.</p>
+                            <code class="small">
+                                &gt;sequence_id [metadata]<br>
+                                ATGCATGCATGCATGCATGC...
+                            </code>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>CSV/TSV Files</strong>
+                            <p class="small mb-0">Tabular data with headers. Should contain either a sequence column or mutation features.</p>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <strong>JSON Files</strong>
+                            <p class="small mb-0">Structured data, either as an array of records or nested objects with sequence information.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h3 class="card-title">External Data Sources</h3>
+                    <p>You can download genome data from these sources:</p>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">
+                            <a href="https://card.mcmaster.ca/download" target="_blank" class="text-decoration-none">
+                                <i class="fas fa-external-link-alt me-2"></i>CARD Database
+                            </a>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <a href="https://www.ncbi.nlm.nih.gov/bioproject/?term=ReSeqTB" target="_blank" class="text-decoration-none">
+                                <i class="fas fa-external-link-alt me-2"></i>NCBI ReSeqTB
+                            </a>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <a href="https://www.ncbi.nlm.nih.gov/genbank/" target="_blank" class="text-decoration-none">
+                                <i class="fas fa-external-link-alt me-2"></i>NCBI GenBank
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

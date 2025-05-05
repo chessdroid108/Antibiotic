@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">Identify Antibiotic Resistance Mutations</h1>
+            <p class="lead">
+                Discover genetic markers of antibiotic resistance in bacterial genomes through comparative genomic analysis.
+            </p>
+            <p class="mb-4">
+                Our advanced pipeline combines statistical analysis with machine learning to identify significant mutations associated with antibiotic resistance.
+            </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4 me-md-2">
+                    <i class="fas fa-flask me-2"></i>Start Analyzing
+                </a>
+                {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 me-md-2">
+                    <i class="fas fa-user-plus me-2"></i>Sign Up
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card bg-dark text-white shadow">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Key Features</h2>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent border-light">
+                            <i class="fas fa-dna text-primary me-2"></i>
+                            <strong>Comparative Genomic Analysis</strong>: Compare resistant and non-resistant strains
+                        </li>
+                        <li class="list-group-item bg-transparent border-light">
+                            <i class="fas fa-chart-bar text-success me-2"></i>
+                            <strong>Group Association Model</strong>: Statistical mutation frequency comparison
+                        </li>
+                        <li class="list-group-item bg-transparent border-light">
+                            <i class="fas fa-brain text-warning me-2"></i>
+                            <strong>Machine Learning</strong>: XGBoost feature selection and SVM classification
+                        </li>
+                        <li class="list-group-item bg-transparent border-light">
+                            <i class="fas fa-vial text-info me-2"></i>
+                            <strong>Validation</strong>: 10-fold cross-validation for reliable results
+                        </li>
+                        <li class="list-group-item bg-transparent border-light">
+                            <i class="fas fa-cube text-danger me-2"></i>
+                            <strong>3D Mapping</strong>: Map mutations to protein structures
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-upload fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="card-title text-center">Upload</h3>
+                    <p class="card-text">
+                        Upload your bacterial genome data in various formats including FASTA, CSV, TSV, and JSON. Specify resistant and non-resistant strains.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-cogs fa-3x text-success"></i>
+                    </div>
+                    <h3 class="card-title text-center">Analyze</h3>
+                    <p class="card-text">
+                        Run the analysis pipeline to identify mutations, perform statistical tests, and train machine learning models to predict resistance.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-chart-line fa-3x text-danger"></i>
+                    </div>
+                    <h3 class="card-title text-center">Visualize</h3>
+                    <p class="card-text">
+                        Explore interactive visualizations of mutation frequencies, model performance, and 3D protein structures with mapped mutations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-dark border-primary shadow">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Supported Data Sources</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item bg-transparent">
+                                    <i class="fas fa-database text-primary me-2"></i>
+                                    <strong>CARD (Comprehensive Antibiotic Resistance Database)</strong>
+                                    <p class="mb-0 ms-4 small">Access to resistance determinants through API or downloadable JSON</p>
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <i class="fas fa-database text-primary me-2"></i>
+                                    <strong>NCBI ReSeqTB</strong>
+                                    <p class="mb-0 ms-4 small">FASTA files for M. tuberculosis with resistance phenotypes</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush bg-transparent">
+                                <li class="list-group-item bg-transparent">
+                                    <i class="fas fa-database text-primary me-2"></i>
+                                    <strong>E. coli Genome Collection</strong>
+                                    <p class="mb-0 ms-4 small">7,000 E. coli genomes with AMR metadata</p>
+                                </li>
+                                <li class="list-group-item bg-transparent">
+                                    <i class="fas fa-database text-primary me-2"></i>
+                                    <strong>Custom Data</strong>
+                                    <p class="mb-0 ms-4 small">Upload your own genome sequences and metadata</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

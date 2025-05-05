@@ -1,0 +1,90 @@
+/* Custom CSS for AMR Mutation Analyzer */
+
+/* Main content styling */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Card hover effects */
+.card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom badges for resistance status */
+.badge-resistant {
+    background-color: var(--bs-danger);
+    color: white;
+}
+
+.badge-sensitive {
+    background-color: var(--bs-success);
+    color: white;
+}
+
+.badge-unknown {
+    background-color: var(--bs-secondary);
+    color: white;
+}
+
+/* Analysis results styling */
+.mutation-table {
+    font-size: 0.9rem;
+}
+
+.significant-mutation {
+    font-weight: bold;
+    color: var(--bs-danger);
+}
+
+/* Visualization containers */
+.chart-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+/* Feature importance bars */
+.feature-bar {
+    height: 25px;
+    margin-bottom: 5px;
+    background-color: var(--bs-primary);
+    color: white;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 25px;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Upload form styling */
+.upload-container {
+    border: 2px dashed var(--bs-secondary);
+    border-radius: 5px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.upload-container:hover {
+    border-color: var(--bs-primary);
+}
+
+/* Footer styling */
+.footer {
+    margin-top: auto;
+    padding: 1rem 0;
+}

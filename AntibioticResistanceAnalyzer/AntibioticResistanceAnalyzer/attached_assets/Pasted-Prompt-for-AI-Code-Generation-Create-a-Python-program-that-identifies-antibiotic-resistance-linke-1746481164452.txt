@@ -1,0 +1,74 @@
+Prompt for AI Code Generation:
+"Create a Python program that identifies antibiotic resistance-linked mutations in bacterial genomes by comparing resistant/non-resistant strains. Use the following resources and requirements:
+
+Resources
+Genomic Datasets:
+
+CARD (Comprehensive Antibiotic Resistance Database): API or downloadable JSON for resistance determinants.
+
+NCBI ReSeqTB: FASTA files for M. tuberculosis with resistance phenotypes.
+
+7,000 E. coli genomes: CSV/TSV files with AMR metadata (e.g., NCBI BioProject PRJNA1234).
+
+Benchmarking datasets: Microbial Bioinformatics Hackathon’s gold-standard genomic data (available as .fastq/.bam).
+
+Tools/Libraries:
+
+Biopython for parsing FASTA/genbank files.
+
+Scikit-learn for SVM/Random Forest models.
+
+XGBoost for gradient-boosted feature selection.
+
+Pandas/NumPy for data manipulation.
+
+Code Requirements
+Data Preprocessing:
+
+Load resistant/non-resistant strain genomes and metadata.
+
+Encode mutations as binary features (1=present in resistant strains, 0=absent).
+
+Feature Selection:
+
+Implement a Group Association Model (GAM) to compare mutation frequencies between groups.
+
+Use XGBoost to rank mutations by importance (e.g., feature_importances_).
+
+Model Training:
+
+Train an SVM classifier to predict resistance status using selected mutations.
+
+Validate with 10-fold cross-validation and clinical sample testing (provide example data paths).
+
+Structural Validation:
+
+Integrate PDB files (e.g., M. tuberculosis RNA polymerase) via Biopython to map mutations to 3D structures.
+
+Output:
+
+List top 10 resistance-linked mutations with statistical significance (p-value < 0.01).
+
+Generate a confusion matrix and ROC curve for model performance.
+
+Export structural visualization of key mutations (e.g., PyMOL script).
+
+Example Input/Output
+Input: resistant_strains.fasta, non_resistant.csv, CARD_data.json
+
+Output:
+
+mutation_report.csv (mutation, frequency, p-value, XGBoost score)
+
+model_accuracy.txt (e.g., "SVM AUC: 0.89")
+
+3d_mutation_visualization.pse (PyMOL session file)
+
+Constraints
+Prioritize interpretability: Include SHAP values to explain model predictions.
+
+Handle dataset bias by stratified sampling across bacterial lineages.
+
+Generate code with inline comments explaining key steps (e.g., 'Filtering mutations using GAM')."
+
+This prompt provides structured guidance for generating actionable code while leveraging specific datasets and addressing real-world biological constraints.

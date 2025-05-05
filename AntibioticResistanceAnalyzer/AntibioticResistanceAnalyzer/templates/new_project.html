@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">New Project</li>
+                </ol>
+            </nav>
+            <h1 class="mb-4">Create New Project</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">Project Details</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required placeholder="Enter a descriptive name for your project">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Describe your project and research goals"></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Create Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Project Tips</h3>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">
+                            <i class="fas fa-lightbulb text-warning me-2"></i>
+                            Use descriptive names for easy identification
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <i class="fas fa-lightbulb text-warning me-2"></i>
+                            Include organism and antibiotic details in the description
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <i class="fas fa-lightbulb text-warning me-2"></i>
+                            Organize related analyses in separate projects
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h3 class="card-title">What's Next?</h3>
+                    <p>After creating your project, you'll need to:</p>
+                    <ol class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">Upload genome data for resistant strains</li>
+                        <li class="list-group-item bg-transparent">Upload genome data for non-resistant strains</li>
+                        <li class="list-group-item bg-transparent">Configure and run the analysis</li>
+                        <li class="list-group-item bg-transparent">Explore the results and visualizations</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

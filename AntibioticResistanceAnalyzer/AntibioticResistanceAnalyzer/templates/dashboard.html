@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h1>My Projects</h1>
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>New Project
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if projects %}
+            {% for project in projects %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card bg-dark h-100 shadow">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ project.name }}</h3>
+                        <p class="card-text text-muted">
+                            <i class="far fa-calendar-alt me-1"></i> Created: {{ project.created_at.strftime('%Y-%m-%d') }}
+                        </p>
+                        <p class="card-text">
+                            {% if project.description %}
+                                {{ project.description|truncate(100) }}
+                            {% else %}
+                                <span class="text-muted fst-italic">No description provided</span>
+                            {% endif %}
+                        </p>
+                        
+                        <div class="d-flex justify-content-between mt-3">
+                            <div>
+                                <span class="badge bg-info me-1">{{ project.genome_data|length }} Genomes</span>
+                                <span class="badge bg-success">{{ project.results|length }} Results</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-project-diagram me-2"></i>View Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="card bg-dark shadow">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-flask fa-4x mb-3 text-muted"></i>
+                        <h3>No Projects Yet</h3>
+                        <p class="text-muted">Start by creating a new project to analyze bacterial genomes for antibiotic resistance mutations.</p>
+                        <a href="{{ url_for('new_project') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Create Your First Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if projects %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Quick Tips</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <h5><i class="fas fa-upload text-primary me-2"></i>Upload Genomes</h5>
+                                <p class="small">Upload both resistant and non-resistant bacterial genome sequences for comparison.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <h5><i class="fas fa-cogs text-warning me-2"></i>Run Analysis</h5>
+                                <p class="small">Set analysis parameters and run the pipeline to identify resistance-linked mutations.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <h5><i class="fas fa-chart-line text-success me-2"></i>View Results</h5>
+                                <p class="small">Explore interactive visualizations and download detailed reports of your findings.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

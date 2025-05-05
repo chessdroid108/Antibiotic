@@ -1,0 +1,395 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/visualization.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('project_detail', project_id=project.id) }}">{{ project.name }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Analysis Results</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>{{ result.name }}</h1>
+                <a href="{{ url_for('export_result', result_id=result.id) }}" class="btn btn-primary">
+                    <i class="fas fa-download me-2"></i>Export Results
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Parameters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Analysis Parameters</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">P-value Threshold</h5>
+                                    <p class="display-6">{{ stats.significance_threshold }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Min. Frequency Diff.</h5>
+                                    <p class="display-6">{{ stats.min_frequency_diff }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Total Mutations</h5>
+                                    <p class="display-6">{{ stats.total_mutations }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Significant Mutations</h5>
+                                    <p class="display-6">{{ stats.significant_mutations }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Performance -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Model Performance</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="card bg-secondary">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Accuracy</h5>
+                                    <p class="display-6">{{ "%.2f"|format(model_perf.accuracy * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card bg-secondary">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">ROC AUC</h5>
+                                    <p class="display-6">{{ "%.2f"|format(model_perf.roc_auc * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card bg-secondary">
+                                <div class="card-body text-center py-2">
+                                    <h6 class="card-title">Precision</h6>
+                                    <p class="h4">{{ "%.2f"|format(model_perf.precision * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card bg-secondary">
+                                <div class="card-body text-center py-2">
+                                    <h6 class="card-title">Recall</h6>
+                                    <p class="h4">{{ "%.2f"|format(model_perf.recall * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card bg-secondary">
+                                <div class="card-body text-center py-2">
+                                    <h6 class="card-title">F1 Score</h6>
+                                    <p class="h4">{{ "%.2f"|format(model_perf.f1_score * 100) }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Confusion Matrix</h2>
+                </div>
+                <div class="card-body d-flex flex-column justify-content-center">
+                    {% if model_perf.confusion_matrix %}
+                    <div class="confusion-matrix-container">
+                        <div class="row g-0 text-center">
+                            <div class="col-6 offset-3">
+                                <div class="alert alert-secondary py-1">Predicted</div>
+                            </div>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-3">
+                                <div class="alert alert-secondary h-100 d-flex justify-content-center align-items-center">Actual</div>
+                            </div>
+                            <div class="col-9">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="alert alert-secondary py-1">Non-Resistant</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="alert alert-secondary py-1">Resistant</div>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="card bg-success text-white">
+                                            <div class="card-body text-center py-3">
+                                                <h5>TN: {{ model_perf.confusion_matrix.tn }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card bg-danger text-white">
+                                            <div class="card-body text-center py-3">
+                                                <h5>FP: {{ model_perf.confusion_matrix.fp }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-2">
+                                    <div class="col-6">
+                                        <div class="card bg-danger text-white">
+                                            <div class="card-body text-center py-3">
+                                                <h5>FN: {{ model_perf.confusion_matrix.fn }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="card bg-success text-white">
+                                            <div class="card-body text-center py-3">
+                                                <h5>TP: {{ model_perf.confusion_matrix.tp }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        Confusion matrix data is not available
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizations -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Mutation Frequency Comparison</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="frequencyChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">ROC Curve</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="rocChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Feature Importance</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="featureImportanceChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark shadow h-100">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Mutation Distribution by Gene</h2>
+                </div>
+                <div class="card-body">
+                    <canvas id="distributionChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Significant Mutations Table -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Significant Mutations</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mutation</th>
+                                    <th>Gene</th>
+                                    <th>Position</th>
+                                    <th>Resistant Freq.</th>
+                                    <th>Non-Resistant Freq.</th>
+                                    <th>Freq. Diff.</th>
+                                    <th>P-Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mutation in mutations %}
+                                    {% if mutation.significant %}
+                                    <tr>
+                                        <td>{{ mutation.mutation }}</td>
+                                        <td>{{ mutation.gene }}</td>
+                                        <td>{{ mutation.position }}</td>
+                                        <td>{{ "%.2f"|format(mutation.resistant_freq * 100) }}%</td>
+                                        <td>{{ "%.2f"|format(mutation.non_resistant_freq * 100) }}%</td>
+                                        <td>{{ "%.2f"|format(mutation.freq_diff * 100) }}%</td>
+                                        <td>{{ "%.4f"|format(mutation.p_value) }}</td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not mutations or not mutations|selectattr('significant')|list %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No significant mutations found</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Genes -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Top Genes with Significant Mutations</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Gene</th>
+                                    <th>Significant Mutations</th>
+                                    <th>Total Mutations</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for gene in stats.top_genes %}
+                                <tr>
+                                    <td>{{ gene.gene }}</td>
+                                    <td>{{ gene.significant_mutations }}</td>
+                                    <td>{{ gene.total_mutations }}</td>
+                                    <td>{{ "%.2f"|format((gene.significant_mutations / gene.total_mutations) * 100) if gene.total_mutations > 0 else 0 }}%</td>
+                                </tr>
+                                {% endfor %}
+                                {% if not stats.top_genes %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No gene data available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Structure Mappings (if available) -->
+    {% if viz_data and viz_data.structure_mappings %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark shadow">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">3D Protein Structure Mappings</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for gene, structure in viz_data.structure_mappings.items() %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-secondary">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">{{ gene }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>PDB ID:</strong> {{ structure.pdb_id }}</p>
+                                    <p><strong>Mapped Mutations:</strong></p>
+                                    <ul>
+                                        {% for mutation in structure.mutations %}
+                                        <li>{{ mutation.mutation }} (Position: {{ mutation.position }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <a href="https://www.rcsb.org/structure/{{ structure.pdb_id }}" target="_blank" class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>View in PDB
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all visualizations
+        {% if viz_data %}
+            {% if viz_data.frequency_comparison %}
+            createFrequencyComparisonChart('frequencyChart', {{ viz_data.frequency_comparison|tojson }});
+            {% endif %}
+            
+            {% if viz_data.roc_curve %}
+            createROCChart('rocChart', {{ viz_data.roc_curve|tojson }});
+            {% endif %}
+            
+            {% if viz_data.feature_importance %}
+            createFeatureImportanceChart('featureImportanceChart', {{ viz_data.feature_importance|tojson }});
+            {% endif %}
+            
+            {% if viz_data.mutation_distribution %}
+            createDistributionChart('distributionChart', {{ viz_data.mutation_distribution|tojson }});
+            {% endif %}
+        {% endif %}
+    });
+</script>
+{% endblock %}

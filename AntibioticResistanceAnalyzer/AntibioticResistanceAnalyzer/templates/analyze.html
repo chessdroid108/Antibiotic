@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('project_detail', project_id=project.id) }}">{{ project.name }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Analyze Genomes</li>
+                </ol>
+            </nav>
+            <h1 class="mb-4">Analyze Genomes</h1>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Set analysis parameters to identify mutations associated with antibiotic resistance.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">Analysis Parameters</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="p_value_threshold" class="form-label">P-value Threshold</label>
+                            <input type="number" class="form-control" id="p_value_threshold" name="p_value_threshold" value="0.05" min="0.001" max="0.1" step="0.001">
+                            <div class="form-text">Statistical significance threshold (smaller = more stringent)</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="min_frequency_diff" class="form-label">Minimum Frequency Difference</label>
+                            <input type="number" class="form-control" id="min_frequency_diff" name="min_frequency_diff" value="0.2" min="0.05" max="0.5" step="0.01">
+                            <div class="form-text">Minimum difference in mutation frequency between resistant and non-resistant strains</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="cv_folds" class="form-label">Cross-Validation Folds</label>
+                            <input type="number" class="form-control" id="cv_folds" name="cv_folds" value="10" min="5" max="20" step="1">
+                            <div class="form-text">Number of folds for cross-validation (higher = more robust but slower)</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="feature_selection" class="form-label">Feature Selection Method</label>
+                            <select class="form-select" id="feature_selection" name="feature_selection">
+                                <option value="xgboost" selected>XGBoost</option>
+                                <option value="none">None (use all features)</option>
+                            </select>
+                            <div class="form-text">Method to select the most informative mutations</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="classifier" class="form-label">Classifier Model</label>
+                            <select class="form-select" id="classifier" name="classifier">
+                                <option value="svm" selected>Support Vector Machine (SVM)</option>
+                                <option value="xgboost">XGBoost</option>
+                            </select>
+                            <div class="form-text">Machine learning model for resistance prediction</div>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-clock me-2"></i> Analysis may take several minutes depending on dataset size and parameters.
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-cogs me-2"></i>Run Analysis
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-dark shadow mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Dataset Summary</h3>
+                    <div class="list-group list-group-flush bg-transparent">
+                        <div class="list-group-item bg-transparent d-flex justify-content-between">
+                            <span>Total Genomes:</span>
+                            <span class="badge bg-primary rounded-pill">{{ genome_data|length }}</span>
+                        </div>
+                        <div class="list-group-item bg-transparent d-flex justify-content-between">
+                            <span>Resistant Strains:</span>
+                            <span class="badge bg-danger rounded-pill">{{ genome_data|selectattr('is_resistant', 'equalto', True)|list|length }}</span>
+                        </div>
+                        <div class="list-group-item bg-transparent d-flex justify-content-between">
+                            <span>Non-Resistant Strains:</span>
+                            <span class="badge bg-success rounded-pill">{{ genome_data|selectattr('is_resistant', 'equalto', False)|list|length }}</span>
+                        </div>
+                        <div class="list-group-item bg-transparent d-flex justify-content-between">
+                            <span>Unknown Resistance:</span>
+                            <span class="badge bg-secondary rounded-pill">{{ genome_data|selectattr('is_resistant', 'none')|list|length }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card bg-dark shadow">
+                <div class="card-body">
+                    <h3 class="card-title">Analysis Pipeline</h3>
+                    <ol class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">Data Preprocessing</li>
+                        <li class="list-group-item bg-transparent">Mutation Identification</li>
+                        <li class="list-group-item bg-transparent">Statistical Analysis (Group Association Model)</li>
+                        <li class="list-group-item bg-transparent">Feature Selection with XGBoost</li>
+                        <li class="list-group-item bg-transparent">SVM Classification</li>
+                        <li class="list-group-item bg-transparent">Model Validation</li>
+                        <li class="list-group-item bg-transparent">3D Structure Mapping</li>
+                        <li class="list-group-item bg-transparent">Results Visualization</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
